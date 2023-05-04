@@ -56,9 +56,34 @@ k get pod -o wide
 k top pods 
 ```
 
-Exercice -2
+## Exercice -2
 On the namespace exe2, create a Deployment named memcached that uses the image bitnami/memcached:1.27.1.2
-Set to 3 replicas, check the log
+If the deployment failed, find the cause and use the latest image of bitnami memcached on docker hub
+Set to 3 replicas, check the log of one of the 3 pods
+
 
 ## Exercice -3
 Scale the Deployment to 7 replicas using the scale command. Ensure that the correct number of Pods exist.
+
+```shell
+k scale deployment memcached --replicas=7
+```
+
+## Exercice -4
+Create the ServiceAccount named api-access in a new namespace called apps.
+
+### Solution Exercice -4
+```shell
+kubectl create namespace apps
+kubectl create serviceaccount api-access -n apps
+```
+or 
+```shell
+
+```
+
+## Exercice -5
+Create a ClusterRole with the name api-clusterrole, and create a ClusterRoleBinding
+named api-clusterrolebinding. Map the ServiceAccount from the
+previous step to the API resources pods with the operations watch, list, and
+get.
