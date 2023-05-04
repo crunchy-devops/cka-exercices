@@ -24,6 +24,9 @@ Create a new user DevDan and assign a password of 12345678.
 
 Generate a private key then Certificate Signing Request (CSR) for DevDan.  
 ```openssl genrsa -out DevDan.key 2048```
+
+Note: Try commenting RANDFILE line in file /etc/ssl/openssl.cnf
+
 ```shell
 openssl req -new -key DevDan.key \
 -out DevDan.csr -subj "/CN=DevDan/O=development"
@@ -32,8 +35,7 @@ openssl req -new -key DevDan.key \
 Using thew newly created request generate a self-signed certificate using the x509 protocol. Use the CA keys for the Kubernetes cluster and set a 45-day expiration. You’ll need to use sudo to access to the inbound files.
 
 ```shell
-sudo openssl x509 -req -in DevDan.csr -CA /etc/kubernetes/pki/ca.crt -CAkey \ 
-/etc/kubernetes/pki/ca.key -CAcreateserial -out DevDan.crt -days 45
+sudo openssl x509 -req -in DevDan.csr -CA /etc/kubernetes/pki/ca.crt -CAkey /etc/kubernetes/pki/ca.key -CAcreateserial -out DevDan.crt -days 45
 ```
 
 Update the access config file to reference the new key and certificate. Normally we would move them to a safe directory instead of a non-root user’s home.  
@@ -43,7 +45,7 @@ View the update to your credentials file. Use diff to compare against the copy w
 ```diff cluster-api-config .kube/config```
 
 
-We will now create a context. For this we will need the name of the cluster, namespace and CN of the user we set or saw in previous steps.
+We will now create a context. For this we will need the name of the cluster, namespace and CN , common name, of the user we set or saw in previous steps.
 ```shell
 k config set-context DevDan-context  --cluster=kubernetes --namespace=development  --user=DevDan
 ```
