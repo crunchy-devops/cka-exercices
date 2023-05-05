@@ -1,6 +1,6 @@
 # cka-exercices
 cka basic exercices  
-
+https://github.com/crunchy-devops/cka-exercices.git
 ## Extra
 Go to the master node
 ```shell
@@ -87,3 +87,7 @@ Create a ClusterRole with the name api-clusterrole, and create a ClusterRoleBind
 named api-clusterrolebinding. Map the ServiceAccount from the
 previous step to the API resources pods with the operations watch, list, and
 get.
+
+
+sudo snap install jq --classic
+kubectl get ns my-namespace -o json | jq '.spec.finalizers = []' | kubectl replace --raw "/api/v1/namespaces/my-namespace/finalize" -f -
